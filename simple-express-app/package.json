@@ -1,0 +1,21 @@
+{
+  "name": "simple-express-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --require ./instrument.js index.js",
+    "start-agent": "node --require ./instrument_agent.js index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@middleware.io/node-apm": "2.0.0-rc.5",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.0",
+    "serverless-http": "^3.2.0",
+    "uuid": "^10.0.0"
+  }
+}

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-express-app
+  namespace: naman-nodejs
+  labels:
+    app: simple-express-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-express-app
+  template:
+    metadata:
+      labels:
+        app: simple-express-app
+    spec:
+      containers:
+      - name: simple-express-app
+        image: ghcr.io/middleware-labs/simple-express-app:latest #Your image
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: PORT
+          value: "3000"
+        - name: MW_AGENT_SERVICE
+          value: "mw-service.mw-agent-ns.svc.cluster.local"
+        - name: MW_API_KEY
+          value: "<MW_API_KEY>"
+        - name: MW_SERVICE_NAME
+          value: "simple-express-app"
+        - name: MW_TARGET
+          value: "<MW_TARGET>"
+        - name: MW_DEBUG
+          value: "true"
+      imagePullSecrets:
+        - name: ghcr-secret
