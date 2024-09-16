@@ -1,0 +1,27 @@
+# Build stage
+FROM node:18-alpine AS build
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN apk --no-cache add build-base
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN npm install
+
+# Production stage
+FROM node:18-alpine
+
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY . .
+
+ENV NODE_ENV=production
+ENV PORT=7001
+
+EXPOSE 7001
+
+CMD ["node", "server"]
+
+
