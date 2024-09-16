@@ -1,0 +1,120 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-word-game-server
+  namespace: naman-nodejs
+  labels:
+    app: grpc-word-game-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-word-game-server
+  template:
+    metadata:
+      labels:
+        app: grpc-word-game-server
+    spec:
+      containers:
+      - name: grpc-word-game-server
+        image: ghcr.io/middleware-labs/mw-node-grpc-demo:dev
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7001
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: LOG_LEVEL
+          value: info
+        - name: PORT
+          value: "7001"
+        - name: MW_AGENT_SERVICE
+          value: "mw-service.mw-agent-ns.svc.cluster.local"
+        - name: MW_API_KEY
+          value: "DUMMY"
+        # - name: MW_DEBUG
+        #   value: "ALL"
+        # - name: MW_TARGET
+        #   value: "https://plo4e_fzx.middleware.io:443"
+        - name: MW_SERVICE_NAME
+          value: "grpc-word-game-server"
+        command: ["node", "server.js"]
+      imagePullSecrets:
+        - name: ghcr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-word-game-server
+  namespace: naman-nodejs
+  labels:
+    app: grpc-word-game-server
+spec:
+  ports:
+  - port: 7001
+    targetPort: 7001
+  selector:
+    app: grpc-word-game-server
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-word-game-client
+  namespace: naman-nodejs
+  labels:
+    app: grpc-word-game-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-word-game-client
+  template:
+    metadata:
+      labels:
+        app: grpc-word-game-client
+    spec:
+      containers:
+      - name: grpc-word-game-client
+        image: ghcr.io/middleware-labs/mw-node-grpc-client-demo:dev
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7002
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: LOG_LEVEL
+          value: info
+        - name: GRPC_SERVICE_ADDRESS
+          value: "grpc-word-game-server.naman-nodejs.svc.cluster.local:7001"
+        - name: PORT
+          value: "7002"
+        - name: MW_AGENT_SERVICE
+          value: "mw-service.mw-agent-ns.svc.cluster.local"
+        - name: MW_API_KEY
+          value: "DUMMY"
+        # - name: MW_DEBUG
+        #   value: "ALL"
+        # - name: MW_TARGET
+        #   value: "https://plo4e_fzx.middleware.io:443"
+        - name: MW_SERVICE_NAME
+          value: "grpc-word-game-client"
+        command: ["node", "client_server.js"]
+      imagePullSecrets:
+        - name: ghcr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-word-game-client
+  namespace: naman-nodejs
+  labels:
+    app: grpc-word-game-client
+spec:
+  ports:
+  - port: 7002
+    targetPort: 7002
+  selector:
+    app: grpc-word-game-client
+  type: ClusterIP

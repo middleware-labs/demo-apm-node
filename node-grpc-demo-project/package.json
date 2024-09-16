@@ -1,0 +1,20 @@
+{
+  "name": "grpc-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.11.2",
+    "@grpc/proto-loader": "^0.7.13",
+    "@middleware.io/node-apm": "<LATEST VERSION>",
+    "bunyan": "^1.8.15",
+    "express": "^4.19.2"
+  }
+}
