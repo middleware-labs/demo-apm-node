@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Check</title>
+    <script
+      src="https://cdnjs.middleware.io/browser/libs/0.0.1/middleware-rum.min.js"
+      type="text/javascript"
+    ></script>
+    <script>
+      if (window.Middleware) {
+        Middleware.track({
+          serviceName: "new-naman-frontend",
+          projectName: "naman-frontend",
+          accountKey: "pldxlgauwbfmpgqvfxbhdiwurtovkqpydxzn",
+          target: "https://<MW_UID>.middleware.io",
+          defaultAttributes: {
+            "app.version": "1.0.0",
+          },
+          tracePropagationTargets: [/localhost:3000/i],
+        });
+      }
+    </script>
+    <script>
+      function checkHealth() {
+        fetch("http://localhost:3000/health")
+          .then((response) => response.text())
+          .then((data) => {
+            alert("Health check response: " + data);
+          })
+          .catch((error) => {
+            alert("Error: " + error);
+          });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Health Check</h1>
+    <button onclick="checkHealth()">Check Health</button>
+  </body>
+</html>
