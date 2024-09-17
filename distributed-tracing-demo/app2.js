@@ -3,7 +3,7 @@ tracker.track({
   serviceName: "missing-node-app-3001",
   projectName: "distributed-tracing-demo",
   accessToken: "<MW_API_KEY>", // Add your access token here
-  target: "https://4plo493_fzx.middleware.io:443",
+  target: "https://<MW_UID>.middleware.io:443",
 });
 
 const express = require("express");
