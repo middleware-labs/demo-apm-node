@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package status;
+
+service StatusService {
+  rpc SuccessStatus (Empty) returns (StatusResponse);
+  rpc ErrorStatus (Empty) returns (StatusResponse);
+}
+
+message Empty {}
+
+message StatusResponse {
+  int32 code = 1;
+  string message = 2;
+}

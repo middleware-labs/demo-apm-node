@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-demo-client
+  namespace: nodejs-grpc-demo
+  labels:
+    app: grpc-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-demo
+  template:
+    metadata:
+      labels:
+        app: grpc-demo
+    spec:
+      containers:
+        - name: grpc-server
+          image: ghcr.io/middleware-labs/demo-apm-nodejs:grpc-demo
+          command: ["node", "client.js"]
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GRPC_SERVER_HOST
+              value: "grpc-server-service:50051"

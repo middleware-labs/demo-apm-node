@@ -88,16 +88,6 @@ app.get("/items/:id", (req, res) => {
   }
 });
 
-// simulated-crash error
-app.get("/simulated-crash", (req, res) => {
-  throw new Error("Simulated crash");
-});
-
-// simulated-rejection error
-app.get("/simulated-rejection", (req, res) => {
-  Promise.reject(new Error("Simulated rejection"));
-});
-
 // Update
 app.put("/items/:id", (req, res) => {
   const index = items.findIndex((item) => item.id === req.params.id);

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-demo-server
+  namespace: nodejs-grpc-demo
+  labels:
+    app: grpc-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-server
+  template:
+    metadata:
+      labels:
+        app: grpc-server
+    spec:
+      containers:
+        - name: grpc-server
+          image: ghcr.io/middleware-labs/demo-apm-nodejs:grpc-demo
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 50051
+          env:
+            - name: SENTRY_DSN
+              value: "your-sentry-dsn"
