@@ -5,9 +5,9 @@ const { v4: uuidv4 } = require("uuid");
 const https = require("https");
 
 // const tracker = require("@middleware.io/node-apm");
-const { registerErrorHandler } = require("@middleware.io/node-apm");
+// const { registerErrorHandler } = require("@middleware.io/node-apm");
 // const tracer = tracker.getTracer("testTRacer", "2.0.0");
-// const Sentry = require("@sentry/node");
+const Sentry = require("@sentry/node");
 
 function getRequest() {
   const url = "https://opentelemetry.io/";
@@ -90,27 +90,14 @@ app.get("/items/:id", (req, res) => {
   }
 });
 
+// simulated-crash error
 app.get("/simulated-crash", (req, res) => {
   throw new Error("Simulated crash");
 });
 
-app.get("/json-parsing", (req, res, next) => {
-    const invalidJson = "{ type: 'json' }"; 
-    const parsedData = JSON.parse(invalidJson); 
-    res.json(parsedData);
-});
-
+// simulated-rejection error
 app.get("/simulated-rejection", (req, res) => {
   Promise.reject(new Error("Simulated rejection"));
-});
-
-
-app.get("/index", (req, res) => {
-  // index out of range error
-  const arr = [1, 2, 3];
-  const index = 5; // out of range
-  const value = arr[index]; // This will cause an error
-  console.log(value); // This line will not be executed
 });
 
 // Update
@@ -143,10 +130,10 @@ app.delete("/items/:id", (req, res) => {
 // });
 
 // Register the error handler middleware
-registerErrorHandler(app);
+// registerErrorHandler(app);
 
 // The error handler must be registered before any other error middleware and after all controllers
-// Sentry.setupExpressErrorHandler(app);
+Sentry.setupExpressErrorHandler(app);
 
 
 app.listen(3000, () => {
