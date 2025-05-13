@@ -95,8 +95,8 @@ app.get("/simulated-crash", (req, res) => {
 });
 
 app.get("/json-parsing", (req, res, next) => {
-    const invalidJson = "{ type: 'json' }"; 
-    const parsedData = JSON.parse(invalidJson); 
+    const validJson = '{ "type": "json" }'; 
+    const parsedData = JSON.parse(validJson); 
     res.json(parsedData);
 });
 
