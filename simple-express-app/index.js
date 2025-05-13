@@ -111,6 +111,14 @@ app.delete("/items/:id", (req, res) => {
   }
 });
 
+// Index out of range error demonstration
+app.get("/index", (req, res) => {
+  // Create a small array and attempt to access an out-of-bounds index
+  const arr = [1, 2, 3];
+  const value = arr[10]; // This will cause an index out of range error
+  res.json({ value }); // This line won't execute due to the error
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
